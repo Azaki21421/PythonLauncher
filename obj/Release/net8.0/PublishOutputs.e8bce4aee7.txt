@@ -1,0 +1,5 @@
+I:\visual_studio_app\PythonLauncher\PythonLauncher\bin\Release\net8.0\publish\PythonLauncher.exe
+I:\visual_studio_app\PythonLauncher\PythonLauncher\bin\Release\net8.0\publish\PythonLauncher.dll
+I:\visual_studio_app\PythonLauncher\PythonLauncher\bin\Release\net8.0\publish\PythonLauncher.deps.json
+I:\visual_studio_app\PythonLauncher\PythonLauncher\bin\Release\net8.0\publish\PythonLauncher.runtimeconfig.json
+I:\visual_studio_app\PythonLauncher\PythonLauncher\bin\Release\net8.0\publish\PythonLauncher.pdb

@@ -1,0 +1,14 @@
+I:\visual_studio_app\PythonLauncher\PythonLauncher\bin\Debug\net8.0\PythonLauncher.exe
+I:\visual_studio_app\PythonLauncher\PythonLauncher\bin\Debug\net8.0\PythonLauncher.deps.json
+I:\visual_studio_app\PythonLauncher\PythonLauncher\bin\Debug\net8.0\PythonLauncher.runtimeconfig.json
+I:\visual_studio_app\PythonLauncher\PythonLauncher\bin\Debug\net8.0\PythonLauncher.dll
+I:\visual_studio_app\PythonLauncher\PythonLauncher\bin\Debug\net8.0\PythonLauncher.pdb
+I:\visual_studio_app\PythonLauncher\PythonLauncher\obj\Debug\net8.0\PythonLauncher.GeneratedMSBuildEditorConfig.editorconfig
+I:\visual_studio_app\PythonLauncher\PythonLauncher\obj\Debug\net8.0\PythonLauncher.AssemblyInfoInputs.cache
+I:\visual_studio_app\PythonLauncher\PythonLauncher\obj\Debug\net8.0\PythonLauncher.AssemblyInfo.cs
+I:\visual_studio_app\PythonLauncher\PythonLauncher\obj\Debug\net8.0\PythonLauncher.csproj.CoreCompileInputs.cache
+I:\visual_studio_app\PythonLauncher\PythonLauncher\obj\Debug\net8.0\PythonLauncher.dll
+I:\visual_studio_app\PythonLauncher\PythonLauncher\obj\Debug\net8.0\refint\PythonLauncher.dll
+I:\visual_studio_app\PythonLauncher\PythonLauncher\obj\Debug\net8.0\PythonLauncher.pdb
+I:\visual_studio_app\PythonLauncher\PythonLauncher\obj\Debug\net8.0\PythonLauncher.genruntimeconfig.cache
+I:\visual_studio_app\PythonLauncher\PythonLauncher\obj\Debug\net8.0\ref\PythonLauncher.dll
