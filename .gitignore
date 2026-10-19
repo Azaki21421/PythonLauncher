@@ -1,0 +1,25 @@
+# Visual Studio / MSBuild build output
+[Bb]in/
+[Oo]bj/
+[Aa]pp[Pp]ackages/
+BundleArtifacts/
+
+# User-specific files
+*.user
+*.userosscache
+*.suo
+*.sln.docstates
+.vs/
+.vscode/
+
+# Downloaded Python runtime & packages (app downloads this dynamically)
+PortablePython/
+python/
+Lib/site-packages/
+*.zip
+*.tar.gz
+*.whl
+
+# Operating System files
+.DS_Store
+Thumbs.db

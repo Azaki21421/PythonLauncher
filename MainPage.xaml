@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PythonRunnerApp.MainPage"
+             Title="Portable Python Runner"
+             Shell.NavBarIsVisible="False">
+
+    <Grid x:Name="RootGrid" RowDefinitions="Auto, Auto, Auto, Auto, *, Auto" Padding="20">
+        <!-- Header -->
+        <Grid Grid.Row="0" ColumnDefinitions="*, Auto" Margin="0,0,0,15">
+            <VerticalStackLayout Grid.Column="0">
+                <Label Text="Portable Python Runner" FontSize="24" FontAttributes="Bold" />
+                <Label Text="Run multiple Python scripts concurrently in tabs or separate windows" FontSize="14" TextColor="Gray"/>
+            </VerticalStackLayout>
+            <HorizontalStackLayout Grid.Column="1" Spacing="10" VerticalOptions="Center">
+                <Button x:Name="AttachButton" Text="Attach to Main" Clicked="OnAttachToMainClicked" IsVisible="False" HeightRequest="40" CornerRadius="8" BackgroundColor="{AppThemeBinding Light=#E0F2F1, Dark=#004D40}" TextColor="{AppThemeBinding Light=#00796B, Dark=#80CBC4}"/>
+                <Button x:Name="DetachButton" Text="Detach to Window" Clicked="OnDetachTabClicked" HeightRequest="40" CornerRadius="8" BackgroundColor="{AppThemeBinding Light=#EDE7F6, Dark=#311B92}" TextColor="{AppThemeBinding Light=#512BD4, Dark=#D1C4E9}"/>
+                <Button Text="Settings" Clicked="OnSettingsClicked" HeightRequest="40" CornerRadius="8" BackgroundColor="{AppThemeBinding Light=#E3F2FD, Dark=#0D47A1}" TextColor="{AppThemeBinding Light=#1976D2, Dark=#64B5F6}"/>
+            </HorizontalStackLayout>
+        </Grid>
+
+        <!-- Tabs Bar -->
+        <Grid Grid.Row="1" ColumnDefinitions="*, Auto" Margin="0,0,0,15">
+            <ScrollView Grid.Column="0" Orientation="Horizontal" HorizontalScrollBarVisibility="Never">
+                <HorizontalStackLayout x:Name="TabsContainer" Spacing="8" VerticalOptions="Center">
+                    <!-- Tab buttons dynamically populated here -->
+                </HorizontalStackLayout>
+            </ScrollView>
+            <Button Grid.Column="1" Text="+ New Tab" Clicked="OnNewTabClicked" HeightRequest="36" CornerRadius="8" Margin="10,0,0,0" BackgroundColor="{AppThemeBinding Light=#E8F5E9, Dark=#1B5E20}" TextColor="{AppThemeBinding Light=#2E7D32, Dark=#A5D6A7}"/>
+        </Grid>
+
+        <!-- Python Status & Select Script Area -->
+        <Border Grid.Row="2" Stroke="Transparent" StrokeThickness="0" StrokeShape="RoundRectangle 12" Padding="25" Margin="0,0,0,15" BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#1E1E1E}">
+            <Border.Shadow>
+                <Shadow Brush="{AppThemeBinding Light=Black, Dark=Transparent}" Offset="0,4" Radius="10" Opacity="0.05" />
+            </Border.Shadow>
+            <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto">
+                <VerticalStackLayout Grid.Column="0" Grid.Row="0" Spacing="5">
+                    <Label Text="Python Environment" FontAttributes="Bold" FontSize="16" />
+                    <Label x:Name="PythonStatusLabel" Text="Checking..." FontSize="14" TextColor="{AppThemeBinding Light=Green, Dark=LightGreen}"/>
+                </VerticalStackLayout>
+                
+                <VerticalStackLayout Grid.Column="0" Grid.Row="1" Spacing="5" Margin="0,15,0,0">
+                    <Label Text="Selected Script" FontAttributes="Bold" FontSize="16" />
+                    <Label x:Name="SelectedScriptLabel" Text="No script selected" FontSize="14" TextColor="Gray"/>
+                </VerticalStackLayout>
+                
+                <Button Grid.Column="1" Grid.Row="1" x:Name="SelectScriptButton" 
+                        Text="Browse..." 
+                        Clicked="OnSelectScriptClicked"
+                        VerticalOptions="Center"
+                        HeightRequest="40"
+                        CornerRadius="8"/>
+            </Grid>
+        </Border>
+
+        <!-- Dependencies Area -->
+        <Border Grid.Row="3" x:Name="DependenciesFrame" IsVisible="False" Stroke="#FFE082" StrokeThickness="1.5" StrokeShape="RoundRectangle 12" Padding="25" Margin="0,0,0,15" BackgroundColor="{AppThemeBinding Light=#FFF8E1, Dark=#3E2723}">
+            <Border.Shadow>
+                <Shadow Brush="{AppThemeBinding Light=Black, Dark=Transparent}" Offset="0,4" Radius="10" Opacity="0.05" />
+            </Border.Shadow>
+            <Grid ColumnDefinitions="*, Auto">
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="Dependencies Required" FontAttributes="Bold" FontSize="16" TextColor="{AppThemeBinding Light=#F57F17, Dark=#FFB300}" />
+                    <Label x:Name="DependenciesLabel" FontSize="14"/>
+                </VerticalStackLayout>
+                <Button Grid.Column="1" x:Name="InstallDepsButton" 
+                        Text="Install" 
+                        Clicked="OnInstallDependenciesClicked"
+                        VerticalOptions="Center" HeightRequest="40" CornerRadius="8"
+                        BackgroundColor="{AppThemeBinding Light=#FFA000, Dark=#FFCA28}"
+                        TextColor="{AppThemeBinding Light=White, Dark=Black}"/>
+            </Grid>
+        </Border>
+
+        <!-- Output Terminal -->
+        <Border Grid.Row="4" Stroke="#424242" StrokeThickness="1" StrokeShape="RoundRectangle 12" BackgroundColor="#0C0C0C" Margin="0,0,0,15">
+            <Border.Shadow>
+                <Shadow Brush="Black" Offset="0,4" Radius="10" Opacity="0.2" />
+            </Border.Shadow>
+            <Editor x:Name="OutputLabel" 
+                    FontFamily="Consolas, Courier New, monospace" 
+                    FontSize="13" 
+                    TextColor="#00FF00"
+                    BackgroundColor="Transparent"
+                    IsReadOnly="True"
+                    Text=""
+                    Margin="15" />
+        </Border>
+
+        <!-- Execution Controls -->
+        <Grid Grid.Row="5" ColumnDefinitions="Auto, *, Auto, Auto, Auto" Margin="0,5,0,0">
+            <ActivityIndicator Grid.Column="0" x:Name="LoadingIndicator" IsVisible="False" IsRunning="False" VerticalOptions="Center"/>
+            <Label Grid.Column="1" x:Name="StatusLabel" Text="" VerticalOptions="Center" Margin="10,0,0,0" TextColor="Gray" FontSize="12"/>
+            
+            <Button Grid.Column="2" x:Name="ClearOutputButton" 
+                    Text="Clear Output" 
+                    Clicked="OnClearOutputClicked"
+                    Margin="0,0,10,0"/>
+            
+            <Button Grid.Column="3" x:Name="StopScriptButton" 
+                    Text="Stop" 
+                    Clicked="OnStopScriptClicked"
+                    BackgroundColor="#EF5350"
+                    TextColor="White"
+                    IsEnabled="False"
+                    Margin="0,0,10,0"/>
+            
+            <Button Grid.Column="4" x:Name="RunScriptButton" 
+                    Text="Run Script" 
+                    Clicked="OnRunScriptClicked"
+                    BackgroundColor="#4CAF50"
+                    TextColor="White"
+                    IsEnabled="False"/>
+        </Grid>
+    </Grid>
+</ContentPage>

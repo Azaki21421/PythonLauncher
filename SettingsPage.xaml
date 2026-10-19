@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PythonRunnerApp.SettingsPage"
+             Title="Settings"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#121212}">
+
+    <Grid RowDefinitions="Auto, *" Padding="20">
+        
+        <!-- Header -->
+        <Grid Grid.Row="0" ColumnDefinitions="*, Auto" Margin="0,0,0,30">
+            <VerticalStackLayout Grid.Column="0">
+                <Label Text="Settings" FontSize="26" FontAttributes="Bold" />
+                <Label Text="Configure your Portable Python Runner preferences" FontSize="14" TextColor="Gray"/>
+            </VerticalStackLayout>
+            <Button Grid.Column="1" Text="✕ Close" Clicked="OnCloseClicked" BackgroundColor="#EF5350" TextColor="White" VerticalOptions="Center" CornerRadius="8" Padding="15,5"/>
+        </Grid>
+
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Spacing="20" MaximumWidthRequest="800" HorizontalOptions="Start">
+
+                <!-- Application Theme -->
+                <Border Stroke="Transparent" StrokeThickness="0" StrokeShape="RoundRectangle 12" Padding="25" BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#1E1E1E}">
+                    <Border.Shadow>
+                        <Shadow Brush="{AppThemeBinding Light=Black, Dark=Transparent}" Offset="0,4" Radius="10" Opacity="0.05" />
+                    </Border.Shadow>
+                    <Grid ColumnDefinitions="*, Auto">
+                        <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
+                            <Label Text="Theme" FontSize="16" FontAttributes="Bold" />
+                            <Label Text="Choose the application appearance" FontSize="13" TextColor="Gray"/>
+                        </VerticalStackLayout>
+                        <Picker x:Name="ThemePicker" Grid.Column="1" SelectedIndexChanged="OnThemeChanged" WidthRequest="200" VerticalOptions="Center">
+                            <Picker.Items>
+                                <x:String>System Default</x:String>
+                                <x:String>Light</x:String>
+                                <x:String>Dark</x:String>
+                            </Picker.Items>
+                        </Picker>
+                    </Grid>
+                </Border>
+
+                <!-- Python Version -->
+                <Border Stroke="Transparent" StrokeThickness="0" StrokeShape="RoundRectangle 12" Padding="25" BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#1E1E1E}">
+                    <Border.Shadow>
+                        <Shadow Brush="{AppThemeBinding Light=Black, Dark=Transparent}" Offset="0,4" Radius="10" Opacity="0.05" />
+                    </Border.Shadow>
+                    <VerticalStackLayout Spacing="12">
+                        <Grid ColumnDefinitions="*, Auto">
+                            <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
+                                <Label Text="Python Version" FontSize="16" FontAttributes="Bold" />
+                                <Label x:Name="PythonVersionStatusLabel" Text="Fetched dynamically from official releases" FontSize="13" TextColor="Gray"/>
+                            </VerticalStackLayout>
+                            <Picker x:Name="VersionPicker" Grid.Column="1" SelectedIndexChanged="OnVersionChanged" WidthRequest="200" VerticalOptions="Center" />
+                        </Grid>
+
+                        <Label x:Name="CurrentInstalledVersionLabel" Text="Installed: Checking..." FontSize="13" TextColor="Gray" Margin="0,5,0,0"/>
+
+                        <HorizontalStackLayout Spacing="10" Margin="0,5,0,0">
+                            <Button x:Name="InstallSelectedVersionButton" Text="Download / Install Version" Clicked="OnInstallSelectedVersionClicked" HeightRequest="38" CornerRadius="8" BackgroundColor="#4CAF50" TextColor="White"/>
+                            <Button x:Name="DeletePythonButton" Text="Delete Python" Clicked="OnDeletePythonClicked" HeightRequest="38" CornerRadius="8" BackgroundColor="#EF5350" TextColor="White"/>
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Portable Python Installation Path -->
+                <Border Stroke="Transparent" StrokeThickness="0" StrokeShape="RoundRectangle 12" Padding="25" BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#1E1E1E}">
+                    <Border.Shadow>
+                        <Shadow Brush="{AppThemeBinding Light=Black, Dark=Transparent}" Offset="0,4" Radius="10" Opacity="0.05" />
+                    </Border.Shadow>
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="Portable Python Installation Path" FontSize="16" FontAttributes="Bold" />
+                        <Label Text="Where should Python be downloaded and run from?" FontSize="13" TextColor="Gray"/>
+                        
+                        <Grid ColumnDefinitions="*, Auto" ColumnSpacing="10" Margin="0,5,0,0">
+                            <Entry x:Name="InstallPathEntry" Grid.Column="0" IsReadOnly="True" TextColor="Gray" BackgroundColor="Transparent"/>
+                            <Button Text="Browse..." Grid.Column="1" Clicked="OnBrowsePathClicked" HeightRequest="40" CornerRadius="6"/>
+                        </Grid>
+                        <Button Text="Reset to App Folder" Clicked="OnResetPathClicked" HorizontalOptions="Start" HeightRequest="36" Padding="10,0" Margin="0,5,0,0" BackgroundColor="{AppThemeBinding Light=#FFF3E0, Dark=#E65100}" TextColor="{AppThemeBinding Light=#E65100, Dark=#FFE0B2}"/>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Auto-Deletion Policy -->
+                <Border Stroke="Transparent" StrokeThickness="0" StrokeShape="RoundRectangle 12" Padding="25" BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#1E1E1E}">
+                    <Border.Shadow>
+                        <Shadow Brush="{AppThemeBinding Light=Black, Dark=Transparent}" Offset="0,4" Radius="10" Opacity="0.05" />
+                    </Border.Shadow>
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="Cleanup on Exit" FontSize="16" FontAttributes="Bold" />
+                        <Label Text="What files should be automatically deleted when the app closes?" FontSize="13" TextColor="Gray"/>
+                        
+                        <Picker x:Name="CleanupPicker" SelectedIndexChanged="OnCleanupPolicyChanged" Margin="0,5,0,0">
+                            <Picker.Items>
+                                <x:String>Do nothing (Keep everything)</x:String>
+                                <x:String>Delete installed libraries only (site-packages)</x:String>
+                                <x:String>Delete everything (Python core and libraries)</x:String>
+                            </Picker.Items>
+                        </Picker>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Data & Storage Management -->
+                <Border Stroke="Transparent" StrokeThickness="0" StrokeShape="RoundRectangle 12" Padding="25" BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#1E1E1E}">
+                    <Border.Shadow>
+                        <Shadow Brush="{AppThemeBinding Light=Black, Dark=Transparent}" Offset="0,4" Radius="10" Opacity="0.05" />
+                    </Border.Shadow>
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="Clean Up Storage Now" FontSize="16" FontAttributes="Bold" />
+                        <Label Text="Manually wipe installed packages, logs or everything" FontSize="13" TextColor="Gray"/>
+
+                        <HorizontalStackLayout Spacing="10" Margin="0,5,0,0">
+                            <Button Text="Clear Output Logs" Clicked="OnClearLogsClicked" HeightRequest="38" CornerRadius="8" BackgroundColor="{AppThemeBinding Light=#E0E0E0, Dark=#424242}" TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+                            <Button Text="Clear Libraries (site-packages)" Clicked="OnClearLibrariesClicked" HeightRequest="38" CornerRadius="8" BackgroundColor="{AppThemeBinding Light=#FFF3E0, Dark=#E65100}" TextColor="{AppThemeBinding Light=#E65100, Dark=#FFE0B2}"/>
+                            <Button Text="Wipe All Portable Data" Clicked="OnWipeAllDataClicked" HeightRequest="38" CornerRadius="8" BackgroundColor="#D32F2F" TextColor="White"/>
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>
